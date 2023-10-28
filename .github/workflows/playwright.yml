@@ -11,21 +11,21 @@ on:
     branches: [ "main", "master" ]
 
   # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  #[workflow_dispatch]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "test"
-  test:
-    timeout-minutes: 60
+  playwright:
+    name: 'Playwright Tests'
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
+    container:
+      image: mcr.microsoft.com/playwright/python:v1.39.0-jammy
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-
       # Runs a set of commands using the runners shell
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -34,8 +34,7 @@ jobs:
       - name: Install dependncies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: Ensure browsers are installed
-        run: python -m playwright insall --with-deps
+          pip install -r local-requirements.txt
+          pip install -e .
       - name: Run your tests
         run: pytest
