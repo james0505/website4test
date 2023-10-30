@@ -37,5 +37,8 @@ jobs:
           pip install -r requirements.txt
           pip install -e .
      # pip install -r local-requirements.txt
+      - name: Ensure browsers are installed
+        run: python -m playwright install --with-deps
+     # run python test
       - name: Run your tests
         run: pytest
